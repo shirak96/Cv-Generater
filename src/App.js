@@ -3,8 +3,19 @@ import React, { Component } from "react";
 import CV from "react-cv";
 //import { CVData } from './data';
 
+// this.setState({rightSide: ${this.state.education.start_date} - ${this.state.education.end_date}})
+
 export default class App extends Component {
   state = {
+    education: {
+      index: null,
+      start_date: "1900",
+      end_date: "2099",
+      title: "",
+      authority: "",
+      authorityWebSite: "",
+      rightSide: `1900 - 2099`
+    },
     personalData: {
       name: "Full Name",
       title: "Title",
@@ -30,12 +41,20 @@ export default class App extends Component {
         type: "common-list",
         title: "Education",
         icon: "graduation",
+        // sections.items.push({title, authority, authorityWebsite, rightSide})
+        // items.filter()
         items: [
           {
             title: "Computer Engineering (BS)",
             authority: "University",
             authorityWebSite: "https://sample.edu",
             rightSide: "2013 - 2017"
+          },
+          {
+            title: "Some Department (PHD)",
+            authority: "Another University",
+            authorityWebSite: "https://sample.edu",
+            rightSide: "2017 - Present"
           },
           {
             title: "Some Department (PHD)",
@@ -176,7 +195,7 @@ export default class App extends Component {
     const image = e.target.image.value;
     // const type = e.target.contacttype.value;
     // const value = e.target.contactvalue.value;
-    // const email = e.target.email.value;
+    // const email = e.target.email.value;emailDisabled
     // const phone = e.target.phone.value;
     // const website = e.target.website.value;
     // const linkedin = e.target.linkedin.value;
@@ -205,6 +224,10 @@ export default class App extends Component {
     //   // const contacts = this.state.personalData.contacts;
     //   contacts[1] = { type, value };
     // }
+
+    // const contacts = this.state.personalData.contacts;
+    // contacts[1] = { type, value };
+
     const contact_field_keys = [
       "email",
       "phone",
@@ -236,7 +259,16 @@ export default class App extends Component {
     this.setState({ personalData });
   };
 
+  // renderEducationForm(title) {
+  //   title = "Computer Engineering (BS)";
+  //   const data = this.state.sections[1];
+  //   const index = data.items.findIndex(item => item.title === title);
+  //   return data.items[index];
+  //   // data.items[index].title = "Content";
+  // }
+
   render() {
+    console.log(this.state.education);
     return (
       <div>
         <form onSubmit={this.onSubmit}>
@@ -330,10 +362,54 @@ export default class App extends Component {
           />
 
           {/* <label>Social Links: </label>
-       <input name='contacttype' placeholder='contact type'/>
-       <input name='contactvalue' placeholder='contact value'/> */}
+          <input name='contacttype' placeholder='contact type'/>
+          <input name='contactvalue' placeholder='contact value'/>
+          <input name='contactvalue' placeholder='contact value' /> */}
+
           <input type="submit" />
         </form>
+
+        <form>
+          <select name="options">
+            <option value="opt1">opt1</option>
+          </select>
+          <fieldset>
+            <legend>year</legend>
+            <label for="from">from</label>
+            <input
+              type="number"
+              min="1900"
+              id="from"
+              name="from"
+              onChange={e => {
+                const value = e.target.value;
+                const _state = this.state.education;
+                _state.start_date = value;
+
+                this.setState({ education: _state });
+              }}
+            />
+
+            <label for="to">to</label>
+            <input
+              type="number"
+              max="2099"
+              id="to"
+              name="to"
+              // value={this.state.education.end_date}
+              onChange={e => {
+                const value = e.target.value;
+                this.setState(prevState => {
+                  const _state = prevState.education;
+                  _state.end_date = value;
+                  return { education: _state };
+                });
+              }}
+            />
+          </fieldset>
+          <input type="submit" />
+        </form>
+
         <CV {...this.state} />
       </div>
     );
