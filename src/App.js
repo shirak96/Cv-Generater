@@ -7,14 +7,15 @@ import CV from "react-cv";
 
 export default class App extends Component {
   state = {
+    dropdown: null, // title
     education: {
       index: null,
-      start_date: "1900",
-      end_date: "2099",
+      start_date: "",
+      end_date: "",
       title: "",
       authority: "",
       authorityWebSite: "",
-      rightSide: `1900 - 2099`
+      rightSide: ""
     },
     personalData: {
       name: "Full Name",
@@ -44,24 +45,24 @@ export default class App extends Component {
         // sections.items.push({title, authority, authorityWebsite, rightSide})
         // items.filter()
         items: [
-          {
-            title: "Computer Engineering (BS)",
-            authority: "University",
-            authorityWebSite: "https://sample.edu",
-            rightSide: "2013 - 2017"
-          },
-          {
-            title: "Some Department (PHD)",
-            authority: "Another University",
-            authorityWebSite: "https://sample.edu",
-            rightSide: "2017 - Present"
-          },
-          {
-            title: "Some Department (PHD)",
-            authority: "Another University",
-            authorityWebSite: "https://sample.edu",
-            rightSide: "2017 - Present"
-          }
+          // {
+          //   title: "Computer Engineering (BS)",
+          //   authority: "University",
+          //   authorityWebSite: "https://sample.edu",
+          //   rightSide: "2013 - 2017"
+          // },
+          // {
+          //   title: "Some Department (PHD)",
+          //   authority: "Another University",
+          //   authorityWebSite: "https://sample.edu",
+          //   rightSide: "2017 - Present"
+          // },
+          // {
+          //   title: "Some Department (PHD)",
+          //   authority: "Another University",
+          //   authorityWebSite: "https://sample.edu",
+          //   rightSide: "2017 - Present"
+          // }
         ]
       },
       {
@@ -259,6 +260,70 @@ export default class App extends Component {
     this.setState({ personalData });
   };
 
+  addEducation = education => {
+    const sections = this.state.sections;
+    sections[1].items.push(education);
+
+    this.setState({ sections });
+  };
+
+  updateEducation = (education, index) => {
+    this.setState(state => {
+      const educationItems = state.sections[1].items.map((item, j) => {
+        if (j === index) {
+          return education;
+        } else {
+          return item;
+        }
+      });
+      const sections = this.state.sections;
+      sections[1].items = educationItems;
+      return {
+        sections
+      };
+    });
+  };
+
+  onRemoveEducation = index => {
+    console.log("index", index);
+    this.setState(state => {
+      const education = state.sections[1].items.filter((item, j) => {
+        return index !== j;
+      });
+      const sections = this.state.sections;
+      sections[1].items = education;
+      return {
+        sections
+      };
+    });
+  };
+
+  onSubmit1 = e => {
+    e.preventDefault();
+    let education = {
+      title: this.state.education.title,
+      authority: this.state.education.authority,
+      authorityWebSite: this.state.education.authorityWebSite,
+      start_date: this.state.education.start_date,
+      end_date: this.state.education.end_date,
+      rightSide:
+        this.state.education.start_date + " - " + this.state.education.end_date
+    };
+    if (this.state.dropdown === null) {
+      // const edutitle = e.target.title.value;
+      // sections[1].items[0].title = edutitle;
+      // console.log(Education);
+      // personalData.contacts = contacts;
+      // for (let index = 0; index < Education.contacts.length; index++) {
+      //   personalData.contacts[index].value =
+      //     e.target[stuff[index]].value || personalData.contacts[index].value;
+      // }
+      this.addEducation(education);
+    } else {
+      this.updateEducation(education, this.state.dropdown);
+    }
+  };
+
   // renderEducationForm(title) {
   //   title = "Computer Engineering (BS)";
   //   const data = this.state.sections[1];
@@ -267,8 +332,23 @@ export default class App extends Component {
   //   // data.items[index].title = "Content";
   // }
 
+  handleEditEducation(e) {
+    const index = e.target.value === null ? null : parseInt(e.target.value);
+    this.setState(prevState => {
+      const education = [...prevState.sections[1].items];
+      return {
+        education: {
+          ...education[index]
+        },
+        dropdown: index
+      };
+    });
+
+    // this.setState({ dropdown: value });
+  }
+
   render() {
-    console.log(this.state.education);
+    console.log("render state", this.state);
     return (
       <div>
         <form onSubmit={this.onSubmit}>
@@ -337,6 +417,7 @@ export default class App extends Component {
           <label>twitter: </label>
           <input
             type="checkbox"
+            onUpdateItem
             onChange={() =>
               this.setState({ twitterDisabled: !this.state.twitterDisabled })
             }
@@ -369,10 +450,86 @@ export default class App extends Component {
           <input type="submit" />
         </form>
 
-        <form>
-          <select name="options">
-            <option value="opt1">opt1</option>
-          </select>
+        <select
+          name="options"
+          onChange={e => this.handleEditEducation(e)}
+          value={this.state.dropdown}
+        >
+          <option key={null} value={null}>
+            Select an Option
+          </option>
+          {this.state.sections[1].items.map((item, index) => {
+            return (
+              <>
+                <option
+                  key={item.title}
+                  value={index}
+                  selected={this.state.dropdown === index}
+                >
+                  {`${item.title}`}
+                  {/* ${item.authority} - */}
+                </option>
+              </>
+            );
+          })}
+        </select>
+
+        <button
+          type="button"
+          onClick={() => this.onRemoveEducation(this.state.dropdown)}
+        >
+          Remove
+        </button>
+
+        <form onSubmit={this.onSubmit1}>
+          <label>Education title: </label>
+          <input
+            value={this.state.education.title}
+            name="title"
+            type="text"
+            placeholder="title"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.education;
+                _state.title = value;
+                return { education: _state };
+              });
+            }}
+          />
+
+          <label>Education authority: </label>
+          <input
+            value={this.state.education.authority}
+            name="authority"
+            type="text"
+            placeholder="authority"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.education;
+                _state.authority = value;
+                return { education: _state };
+              });
+            }}
+          />
+
+          <label>Education authorityWebSite: </label>
+          <input
+            value={this.state.education.authorityWebSite}
+            name="authorityWebSite"
+            type="text"
+            placeholder="authorityWebSite"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.education;
+                _state.authorityWebSite = value;
+                return { education: _state };
+              });
+            }}
+          />
+
           <fieldset>
             <legend>year</legend>
             <label for="from">from</label>
@@ -381,11 +538,11 @@ export default class App extends Component {
               min="1900"
               id="from"
               name="from"
+              value={this.state.education.start_date}
               onChange={e => {
                 const value = e.target.value;
                 const _state = this.state.education;
                 _state.start_date = value;
-
                 this.setState({ education: _state });
               }}
             />
@@ -396,7 +553,7 @@ export default class App extends Component {
               max="2099"
               id="to"
               name="to"
-              // value={this.state.education.end_date}
+              value={this.state.education.end_date}
               onChange={e => {
                 const value = e.target.value;
                 this.setState(prevState => {
