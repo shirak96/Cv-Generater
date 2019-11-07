@@ -10,12 +10,24 @@ export default class App extends Component {
     dropdown: null, // title
     education: {
       index: null,
-      start_date: "",
-      end_date: "",
       title: "",
       authority: "",
       authorityWebSite: "",
+      start_date: "",
+      end_date: "",
       rightSide: ""
+    },
+    experiences: {
+      index: null,
+      title: "",
+      company: "",
+      description: "",
+      companyWebSite: "",
+      companyMeta: "",
+      descriptionTags: [],
+      datesBetween: "",
+      start_date_: "",
+      end_date: ""
     },
     personalData: {
       name: "Full Name",
@@ -68,35 +80,36 @@ export default class App extends Component {
       {
         type: "experiences-list",
         title: "Experiences",
-        description: "Optional",
+        // description: "Optional",
         icon: "archive",
         items: [
-          {
-            title: "Lead Software Developer",
-            company: "Some Company Example INC",
-            description: "I'm working as a lead developer yeeeey!",
-            companyWebSite: "http://somecompanyexample.com",
-            companyMeta: "",
-            datesBetween: "2017.10 - Present",
-            descriptionTags: ["Javascript", "React"]
-          },
-          {
-            title: "Software Developer",
-            company: "Some Company Example INC",
-            description:
-              "I'm using ReactJS and working as a front-end developer",
-            companyWebSite: "http://somecompanyexample.com",
-            companyMeta: "Little info about company",
-            datesBetween: "2016.8 - 2017.10"
-          },
-          {
-            title: "Intern",
-            company: "Some Software Example INC",
-            description: "I was warming up.",
-            companyWebSite: "http://someexamplecompany.com",
-            companyMeta: "SF USA",
-            datesBetween: "2012.06 - 2012.10"
-          }
+          // {
+          //   title: "Lead Software Developer",
+          //   company: "Some Company Example INC",
+          //   description: "I'm working as a lead developer yeeeey!",
+          //   companyWebSite: "http://somecompanyexample.com",
+          //   companyMeta: "",
+          //   datesBetween: "2017.10 - Present",
+          //   descriptionTags: ["Javascript", "React"]
+          //   // "Javascript,React,SQL,".split(',') => ['']
+          // },
+          // {
+          //   title: "Software Developer",
+          //   company: "Some Company Example INC",
+          //   description:
+          //     "I'm using ReactJS and working as a front-end developer",
+          //   companyWebSite: "http://somecompanyexample.com",
+          //   companyMeta: "Little info about company",
+          //   datesBetween: "2016.8 - 2017.10"
+          // },
+          // {
+          //   title: "Intern",
+          //   company: "Some Software Example INC",
+          //   description: "I was warming up.",
+          //   companyWebSite: "http://someexamplecompany.com",
+          //   companyMeta: "SF USA",
+          //   datesBetween: "2012.06 - 2012.10"
+          // }
         ]
       },
       {
@@ -194,40 +207,10 @@ export default class App extends Component {
     const name = e.target.name.value;
     const title = e.target.title.value;
     const image = e.target.image.value;
-    // const type = e.target.contacttype.value;
-    // const value = e.target.contactvalue.value;
-    // const email = e.target.email.value;emailDisabled
-    // const phone = e.target.phone.value;
-    // const website = e.target.website.value;
-    // const linkedin = e.target.linkedin.value;
-    // const twitter = e.target.twitter.value;
-    // const github = e.target.github.value;
 
     personalData.name = name || personalData.name;
     personalData.title = title || personalData.title;
     personalData.image = image || personalData.image;
-    // personalData.contacts[0].value = email || personalData.contacts[0].value;
-    // personalData.contacts[1].value = phone || personalData.contacts[1].value;
-    // personalData.contacts[2].value = website || personalData.contacts[2].value;
-    // personalData.contacts[3].value = linkedin || personalData.contacts[3].value;
-    // personalData.contacts[4].value = twitter || personalData.contacts[4].value;
-    // personalData.contacts[5].value = github || personalData.contacts[5].value;
-
-    // if (e.target.email.disabled == false) {
-    //   const type = "email";
-    //   const value = e.target.email.value;
-    //   contacts[0] = { type, value };
-    // }
-
-    // if (e.target.phone.disabled == false) {
-    //   const type = "phone";
-    //   const value = e.target.phone.value;
-    //   // const contacts = this.state.personalData.contacts;
-    //   contacts[1] = { type, value };
-    // }
-
-    // const contacts = this.state.personalData.contacts;
-    // contacts[1] = { type, value };
 
     const contact_field_keys = [
       "email",
@@ -242,23 +225,18 @@ export default class App extends Component {
         const type = key;
         const value = e.target[key].value;
         console.log(type, value);
-        if (value !== "")
-          // const contacts = this.state.personalData.contacts;
-          contacts[index] = { type, value };
+        if (value !== "") contacts[index] = { type, value };
       }
     });
 
     personalData.contacts = contacts;
-    // for (let index = 0; index < personalData.contacts.length; index++) {
-    //
 
-    //   personalData.contacts[index].value =
-    //     e.target[stuff[index]].value || personalData.contacts[index].value;
-    // }
     console.log("contacts", contacts);
-    // personalData.contacts.push({type, value})
+
     this.setState({ personalData });
   };
+
+  //Education
 
   addEducation = education => {
     const sections = this.state.sections;
@@ -285,7 +263,6 @@ export default class App extends Component {
   };
 
   onRemoveEducation = index => {
-    console.log("index", index);
     this.setState(state => {
       const education = state.sections[1].items.filter((item, j) => {
         return index !== j;
@@ -310,27 +287,11 @@ export default class App extends Component {
         this.state.education.start_date + " - " + this.state.education.end_date
     };
     if (this.state.dropdown === null) {
-      // const edutitle = e.target.title.value;
-      // sections[1].items[0].title = edutitle;
-      // console.log(Education);
-      // personalData.contacts = contacts;
-      // for (let index = 0; index < Education.contacts.length; index++) {
-      //   personalData.contacts[index].value =
-      //     e.target[stuff[index]].value || personalData.contacts[index].value;
-      // }
       this.addEducation(education);
     } else {
       this.updateEducation(education, this.state.dropdown);
     }
   };
-
-  // renderEducationForm(title) {
-  //   title = "Computer Engineering (BS)";
-  //   const data = this.state.sections[1];
-  //   const index = data.items.findIndex(item => item.title === title);
-  //   return data.items[index];
-  //   // data.items[index].title = "Content";
-  // }
 
   handleEditEducation(e) {
     const index = e.target.value === null ? null : parseInt(e.target.value);
@@ -343,8 +304,89 @@ export default class App extends Component {
         dropdown: index
       };
     });
+  }
 
-    // this.setState({ dropdown: value });
+  //experiences
+
+  addExperiences = experiences => {
+    const sections = this.state.sections;
+    sections[2].items.push(experiences);
+
+    console.log(sections);
+
+    this.setState({ sections });
+  };
+
+  updateExperiences = (experiences, index) => {
+    this.setState(state => {
+      const experiencesItems = state.sections[2].items.map((item, j) => {
+        if (j === index) {
+          return experiences;
+        } else {
+          return item;
+        }
+      });
+      const sections = this.state.sections;
+      sections[2].items = experiencesItems;
+      return {
+        sections
+      };
+    });
+  };
+
+  onRemoveExperiences = index => {
+    this.setState(state => {
+      const experiences = state.sections[1].items.filter((item, j) => {
+        return index !== j;
+      });
+      const sections = this.state.sections;
+      sections[2].items = experiences;
+      return {
+        sections
+      };
+    });
+  };
+
+  onSubmitExperiences = e => {
+    e.preventDefault();
+    const tags =
+      this.state.experiences.descriptionTags !== undefined
+        ? this.state.experiences.descriptionTags
+        : [];
+    console.log(tags);
+    let experiences = {
+      title: this.state.experiences.title,
+      company: this.state.experiences.company,
+      description: this.state.experiences.description,
+      companyWebSite: this.state.experiences.companyWebSite,
+      companyMeta: this.state.experiences.companyMeta,
+      descriptionTags: Array.isArray(tags) ? tags : tags.split(" "),
+      start_date: this.state.experiences.start_date,
+      end_date: this.state.experiences.end_date,
+      datesBetween:
+        this.state.experiences.start_date +
+        " - " +
+        this.state.experiences.end_date
+    };
+    console.log(experiences);
+    if (this.state.dropdown === null) {
+      this.addExperiences(experiences);
+    } else {
+      this.updateExperiences(experiences, this.state.dropdown);
+    }
+  };
+
+  handleEditExperiences(e) {
+    const index = e.target.value === null ? null : parseInt(e.target.value);
+    this.setState(prevState => {
+      const experiences = [...prevState.sections[2].items];
+      return {
+        experiences: {
+          ...experiences[index]
+        },
+        dropdown: index
+      };
+    });
   }
 
   render() {
@@ -442,14 +484,12 @@ export default class App extends Component {
             disabled={this.state.githubDisabled}
           />
 
-          {/* <label>Social Links: </label>
-          <input name='contacttype' placeholder='contact type'/>
-          <input name='contactvalue' placeholder='contact value'/>
-          <input name='contactvalue' placeholder='contact value' /> */}
-
           <input type="submit" />
         </form>
 
+        <br></br>
+
+        <h3>Education</h3>
         <select
           name="options"
           onChange={e => this.handleEditEducation(e)}
@@ -467,7 +507,6 @@ export default class App extends Component {
                   selected={this.state.dropdown === index}
                 >
                   {`${item.title}`}
-                  {/* ${item.authority} - */}
                 </option>
               </>
             );
@@ -560,6 +599,179 @@ export default class App extends Component {
                   const _state = prevState.education;
                   _state.end_date = value;
                   return { education: _state };
+                });
+              }}
+            />
+          </fieldset>
+          <input type="submit" />
+        </form>
+
+        <br></br>
+
+        <h3>Experiences</h3>
+        <input
+          type="checkbox"
+          disabled={this.state.emailDisabled}
+          onChange={() =>
+            this.setState({ emailDisabled: !this.state.emailDisabled })
+          }
+        />
+
+        <select
+          name="options"
+          onChange={e => this.handleEditExperiences(e)}
+          value={this.state.dropdown}
+        >
+          <option key={null} value={null}>
+            Select an Option
+          </option>
+          {this.state.sections[2].items.map((item, index) => {
+            return (
+              <>
+                <option
+                  key={item.title}
+                  value={index}
+                  selected={this.state.dropdown === index}
+                >
+                  {`${item.title}`}
+                </option>
+              </>
+            );
+          })}
+        </select>
+
+        <button
+          type="button"
+          onClick={() => this.onRemoveExperiences(this.state.dropdown)}
+        >
+          Remove
+        </button>
+
+        <form onSubmit={this.onSubmitExperiences}>
+          <label>experience title: </label>
+          <input
+            value={this.state.experiences.title}
+            name="title"
+            type="text"
+            placeholder="title"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.experiences;
+                _state.title = value;
+                return { experiences: _state };
+              });
+            }}
+          />
+
+          <label>company name: </label>
+          <input
+            value={this.state.experiences.company}
+            name="company"
+            type="text"
+            placeholder="company"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.experiences;
+                _state.company = value;
+                return { experiences: _state };
+              });
+            }}
+          />
+
+          <label>company description: </label>
+          <input
+            value={this.state.experiences.description}
+            name="description"
+            type="text"
+            placeholder="description"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.experiences;
+                _state.description = value;
+                return { experiences: _state };
+              });
+            }}
+          />
+
+          <label>company Website: </label>
+          <input
+            value={this.state.experiences.companyWebSite}
+            name="companyWebsite"
+            type="text"
+            placeholder="companyWebsite"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.experiences;
+                _state.companyWebSite = value;
+                return { experiences: _state };
+              });
+            }}
+          />
+
+          <label>company info: </label>
+          <input
+            value={this.state.experiences.companyMeta}
+            name="companyMeta"
+            type="text"
+            placeholder="companyMeta"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.experiences;
+                _state.companyMeta = value;
+                return { experiences: _state };
+              });
+            }}
+          />
+
+          <label>descriptionTags: </label>
+          <input
+            value={this.state.experiences.descriptionTags}
+            name="descriptionTags"
+            type="text"
+            placeholder="descriptionTags"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.experiences;
+                _state.descriptionTags = value;
+                return { experiences: _state };
+              });
+            }}
+          />
+
+          <fieldset>
+            <legend>Year and Month</legend>
+            <label for="from">from</label>
+            <input
+              type="number"
+              id="from"
+              name="from"
+              value={this.state.experiences.start_date}
+              onChange={e => {
+                const value = e.target.value;
+                const _state = this.state.experiences;
+                _state.start_date = value;
+                this.setState({ experiences: _state });
+              }}
+            />
+
+            <label for="to">to</label>
+            <input
+              type="number"
+              id="to"
+              name="to"
+              value={this.state.experiences.end_date}
+              onChange={e => {
+                const value = e.target.value;
+                this.setState(prevState => {
+                  const _state = prevState.experiences;
+                  _state.end_date = value;
+                  return { experiences: _state };
                 });
               }}
             />
