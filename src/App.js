@@ -6,201 +6,226 @@ import CV from "react-cv";
 // this.setState({rightSide: ${this.state.education.start_date} - ${this.state.education.end_date}})
 
 export default class App extends Component {
-  state = {
-    dropdown: null, // title
-    education: {
-      index: null,
-      title: "",
-      authority: "",
-      authorityWebSite: "",
-      start_date: "",
-      end_date: "",
-      rightSide: ""
-    },
-    experiences: {
-      index: null,
-      title: "",
-      company: "",
-      description: "",
-      companyWebSite: "",
-      companyMeta: "",
-      descriptionTags: [],
-      datesBetween: "",
-      start_date_: "",
-      end_date: ""
-    },
-    personalData: {
-      name: "Full Name",
-      title: "Title",
-      image: "https://bulma.io/images/placeholders/128x128.png",
-      contacts: [
-        { type: "email", value: "john@example.com" },
-        { type: "phone", value: "+00 (123) 456 78 90" },
-        { type: "website", value: "example.com" },
-        { type: "linkedin", value: "linkedin.com/in/notexists" },
-        { type: "twitter", value: "twitter.com/404" },
-        { type: "github", value: "github.com/404" }
-      ]
-    },
-    sections: [
-      {
-        type: "text",
-        title: "Career Profile",
-        content:
-          "When I was child, I always want to be a developer. I think I am now. Culpa proident ad officia minim Lorem sint excepteur irure culpa nisi aliquip nostrud.Laborum voluptate nostrud fugiat occaecat proident veniam excepteur pariatur amet ex sit.Anim aliquip do in commodo adipisicing.Nulla adipisicing nisi enim ullamco sunt veniam.Ullamco labore sunt Lorem veniam id et Lorem magna eiusmod aute. Aliquip minim est consectetur anim mollit aliqua ex elit do et nulla do. Cupidatat ad sunt cillum sint consectetur sunt cillum eiusmod ad esse aliqua. Aute anim elit amet in duis aute ipsum deserunt qui deserunt officia excepteur veniam. Et laboris nostrud est ipsum nulla fugiat deserunt magna velit irure. Ullamco duis ut magna ea tempor enim in ipsum.",
-        icon: "usertie"
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      educationItems: [],
+      experienceItems: [],
+      projectsGroups: [],
+      projectItems: [],
+      conferencesAndCertificatesItems: [],
+      languageItems: [],
+      skillsProficiencyItems: [],
+      hobiesAndInterests: [],
+
+      dropdown: null, // title
+      education: {
+        index: null,
+        title: "",
+        authority: "",
+        authorityWebSite: "",
+        start_date: "",
+        end_date: "",
+        rightSide: ""
       },
-      {
-        type: "common-list",
-        title: "Education",
-        icon: "graduation",
-        // sections.items.push({title, authority, authorityWebsite, rightSide})
-        // items.filter()
-        items: [
-          // {
-          //   title: "Computer Engineering (BS)",
-          //   authority: "University",
-          //   authorityWebSite: "https://sample.edu",
-          //   rightSide: "2013 - 2017"
-          // },
-          // {
-          //   title: "Some Department (PHD)",
-          //   authority: "Another University",
-          //   authorityWebSite: "https://sample.edu",
-          //   rightSide: "2017 - Present"
-          // },
-          // {
-          //   title: "Some Department (PHD)",
-          //   authority: "Another University",
-          //   authorityWebSite: "https://sample.edu",
-          //   rightSide: "2017 - Present"
-          // }
-        ]
-      },
-      {
-        type: "experiences-list",
-        title: "Experiences",
-        // description: "Optional",
-        icon: "archive",
-        items: [
-          // {
-          //   title: "Lead Software Developer",
-          //   company: "Some Company Example INC",
-          //   description: "I'm working as a lead developer yeeeey!",
-          //   companyWebSite: "http://somecompanyexample.com",
-          //   companyMeta: "",
-          //   datesBetween: "2017.10 - Present",
-          //   descriptionTags: ["Javascript", "React"]
-          //   // "Javascript,React,SQL,".split(',') => ['']
-          // },
-          // {
-          //   title: "Software Developer",
-          //   company: "Some Company Example INC",
-          //   description:
-          //     "I'm using ReactJS and working as a front-end developer",
-          //   companyWebSite: "http://somecompanyexample.com",
-          //   companyMeta: "Little info about company",
-          //   datesBetween: "2016.8 - 2017.10"
-          // },
-          // {
-          //   title: "Intern",
-          //   company: "Some Software Example INC",
-          //   description: "I was warming up.",
-          //   companyWebSite: "http://someexamplecompany.com",
-          //   companyMeta: "SF USA",
-          //   datesBetween: "2012.06 - 2012.10"
-          // }
-        ]
-      },
-      {
-        type: "projects-list",
-        title: "Projects",
-        description: "Optional",
-        icon: "tasks",
-        groups: [
-          {
-            sectionHeader: "Company Name",
-            description: "Optional",
-            items: [
-              {
-                title: "Project",
-                projectUrl: "optional",
-                description: "Optional"
-              },
-              {
-                title: "Project",
-                projectUrl: "optional",
-                description: "Optional"
-              },
-              {
-                title: "Project",
-                projectUrl: "optional",
-                description: "Optional"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        type: "common-list",
-        title: "Conferences & Certificates",
+      experiences: {
+        index: null,
+        title: "",
+        company: "",
         description: "",
-        icon: "comments",
-        items: [
-          {
-            title: "Some Conferences / 2019",
-            authority: "SomeConf",
-            authorityWebSite: "https://www.someconf.somesome"
-          },
-          {
-            title: "Some Conferences / 2019",
-            authority: "SomeConf",
-            authorityMeta: "Speaker",
-            authorityWebSite: "https://www.someconf.somesome",
-            rightSide: "test"
-          },
-          {
-            title: "Some Conferences / 2012",
-            authorityMeta: "Speaker"
-          }
+        companyWebSite: "",
+        companyMeta: "",
+        descriptionTags: [],
+        datesBetween: "",
+        start_date_: "",
+        end_date: ""
+      },
+      projects: {
+        index: null,
+        sectionHeader: "",
+        description: ""
+        // items: []
+      },
+      // project_items: [],
+      /*   index: "",
+        title: "",
+        projectUrl: "",
+        description: ""
+      }, */
+      personalData: {
+        name: "Full Name",
+        title: "Title",
+        image: "https://bulma.io/images/placeholders/128x128.png",
+        contacts: [
+          { type: "email", value: "john@example.com" },
+          { type: "phone", value: "+00 (123) 456 78 90" },
+          { type: "website", value: "example.com" },
+          { type: "linkedin", value: "linkedin.com/in/notexists" },
+          { type: "twitter", value: "twitter.com/404" },
+          { type: "github", value: "github.com/404" }
         ]
       },
-      {
-        type: "common-list",
-        title: "Languages",
-        icon: "language",
-        items: [
-          {
-            authority: "English",
-            authorityMeta: "Professional"
-          },
-          {
-            authority: "Spanish",
-            authorityMeta: "Beginner"
-          }
-        ]
-      },
-      {
-        type: "tag-list",
-        title: "Skills Proficiency",
-        icon: "rocket",
-        items: ["React", "Javascript", "CSS", "SQL", "SomeTech", "CoolTech"]
-      },
-      {
-        type: "tag-list",
-        title: "Hobies & Interests",
-        icon: "cubes",
-        items: ["Photography", "Poetry"]
-      }
-    ],
-    emailDisabled: "true",
-    phoneDisabled: "ture",
-    websiteDisabled: "ture",
-    linkedinDisabled: "ture",
-    twitterDisabled: "ture",
-    githubDisabled: "ture"
-  };
-  onSubmit = e => {
+      sections: [
+        {
+          type: "text",
+          title: "Career Profile",
+          content:
+            "When I was child, I always want to be a developer. I think I am now. Culpa proident ad officia minim Lorem sint excepteur irure culpa nisi aliquip nostrud.Laborum voluptate nostrud fugiat occaecat proident veniam excepteur pariatur amet ex sit.Anim aliquip do in commodo adipisicing.Nulla adipisicing nisi enim ullamco sunt veniam.Ullamco labore sunt Lorem veniam id et Lorem magna eiusmod aute. Aliquip minim est consectetur anim mollit aliqua ex elit do et nulla do. Cupidatat ad sunt cillum sint consectetur sunt cillum eiusmod ad esse aliqua. Aute anim elit amet in duis aute ipsum deserunt qui deserunt officia excepteur veniam. Et laboris nostrud est ipsum nulla fugiat deserunt magna velit irure. Ullamco duis ut magna ea tempor enim in ipsum.",
+          icon: "usertie"
+        },
+        {
+          type: "common-list",
+          title: "Education",
+          icon: "graduation",
+          // sections.items.push({title, authority, authorityWebsite, rightSide})
+          // items.filter()
+          items: [
+            {
+              title: "Computer Engineering (BS)",
+              authority: "University",
+              authorityWebSite: "https://sample.edu",
+              rightSide: "2013 - 2017"
+            },
+            {
+              title: "Some Department (PHD)",
+              authority: "Another University",
+              authorityWebSite: "https://sample.edu",
+              rightSide: "2017 - Present"
+            },
+            {
+              title: "Some Department (PHD)",
+              authority: "Another University",
+              authorityWebSite: "https://sample.edu",
+              rightSide: "2017 - Present"
+            }
+          ]
+        },
+        {
+          type: "experiences-list",
+          title: "Experiences",
+          // description: "Optional",
+          icon: "archive",
+          items: [
+            {
+              title: "Lead Software Developer",
+              company: "Some Company Example INC",
+              description: "I'm working as a lead developer yeeeey!",
+              companyWebSite: "http://somecompanyexample.com",
+              companyMeta: "",
+              datesBetween: "2017.10 - Present",
+              descriptionTags: ["Javascript", "React"]
+              // "Javascript,React,SQL,".split(',') => ['']
+            },
+            {
+              title: "Software Developer",
+              company: "Some Company Example INC",
+              description:
+                "I'm using ReactJS and working as a front-end developer",
+              companyWebSite: "http://somecompanyexample.com",
+              companyMeta: "Little info about company",
+              datesBetween: "2016.8 - 2017.10"
+            },
+            {
+              title: "Intern",
+              company: "Some Software Example INC",
+              description: "I was warming up.",
+              companyWebSite: "http://someexamplecompany.com",
+              companyMeta: "SF USA",
+              datesBetween: "2012.06 - 2012.10"
+            }
+          ]
+        },
+        {
+          type: "projects-list",
+          title: "Projects",
+          // description: "Optional",
+          icon: "tasks",
+          groups: [
+            {
+              sectionHeader: "Company Name",
+              description: "Optional",
+              items: [
+                {
+                  title: "Project",
+                  projectUrl: "optional",
+                  description: "Optional"
+                },
+                {
+                  title: "Project",
+                  projectUrl: "optional",
+                  description: "Optional"
+                },
+                {
+                  title: "Project",
+                  projectUrl: "optional",
+                  description: "Optional"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: "common-list",
+          title: "Conferences & Certificates",
+          description: "",
+          icon: "comments",
+          items: [
+            {
+              title: "Some Conferences / 2019",
+              authority: "SomeConf",
+              authorityWebSite: "https://www.someconf.somesome"
+            },
+            {
+              title: "Some Conferences / 2019",
+              authority: "SomeConf",
+              authorityMeta: "Speaker",
+              authorityWebSite: "https://www.someconf.somesome",
+              rightSide: "test"
+            },
+            {
+              title: "Some Conferences / 2012",
+              authorityMeta: "Speaker"
+            }
+          ]
+        },
+        {
+          type: "common-list",
+          title: "Languages",
+          icon: "language",
+          items: [
+            {
+              authority: "English",
+              authorityMeta: "Professional"
+            },
+            {
+              authority: "Spanish",
+              authorityMeta: "Beginner"
+            }
+          ]
+        },
+        {
+          type: "tag-list",
+          title: "Skills Proficiency",
+          icon: "rocket",
+          items: ["React", "Javascript", "CSS", "SQL", "SomeTech", "CoolTech"]
+        },
+        {
+          type: "tag-list",
+          title: "Hobies & Interests",
+          icon: "cubes",
+          items: ["Photography", "Poetry"]
+        }
+      ],
+      emailDisabled: "true",
+      phoneDisabled: "ture",
+      websiteDisabled: "ture",
+      linkedinDisabled: "ture",
+      twitterDisabled: "ture",
+      githubDisabled: "ture"
+    };
+  }
+  onSubmitPersonaldata = e => {
     e.preventDefault();
     const personalData = this.state.personalData;
     const contacts = [];
@@ -239,64 +264,74 @@ export default class App extends Component {
   //Education
 
   addEducation = education => {
-    const sections = this.state.sections;
-    sections[1].items.push(education);
+    const educationItems = this.state.educationItems;
+    educationItems.push(education);
 
-    this.setState({ sections });
+    this.setState({ educationItems });
   };
 
   updateEducation = (education, index) => {
     this.setState(state => {
-      const educationItems = state.sections[1].items.map((item, j) => {
+      const educationItems = state.educationItems.map((item, j) => {
         if (j === index) {
           return education;
         } else {
           return item;
         }
       });
-      const sections = this.state.sections;
-      sections[1].items = educationItems;
+
       return {
-        sections
+        educationItems
       };
     });
   };
 
   onRemoveEducation = index => {
     this.setState(state => {
-      const education = state.sections[1].items.filter((item, j) => {
+      const educationItems = state.educationItems.filter((item, j) => {
         return index !== j;
       });
-      const sections = this.state.sections;
-      sections[1].items = education;
+
       return {
-        sections
+        educationItems
       };
     });
   };
 
-  onSubmit1 = e => {
+  onSubmitEducation = e => {
     e.preventDefault();
-    let education = {
-      title: this.state.education.title,
-      authority: this.state.education.authority,
-      authorityWebSite: this.state.education.authorityWebSite,
-      start_date: this.state.education.start_date,
-      end_date: this.state.education.end_date,
-      rightSide:
-        this.state.education.start_date + " - " + this.state.education.end_date
-    };
-    if (this.state.dropdown === null) {
-      this.addEducation(education);
+    if (
+      this.state.education.title !== "" &&
+      this.state.education.authority !== "" &&
+      this.state.education.authorityWebSite !== "" &&
+      this.state.education.start_date !== "" &&
+      this.state.education.end_date !== ""
+    ) {
+      let education = {
+        title: this.state.education.title,
+        authority: this.state.education.authority,
+        authorityWebSite: this.state.education.authorityWebSite,
+        start_date: this.state.education.start_date,
+        end_date: this.state.education.end_date,
+        rightSide:
+          this.state.education.start_date +
+          " - " +
+          this.state.education.end_date
+      };
+      if (this.state.dropdown === null) {
+        this.addEducation(education);
+      } else {
+        this.updateEducation(education, this.state.dropdown);
+      }
     } else {
-      this.updateEducation(education, this.state.dropdown);
+      alert("education data missing!!");
     }
   };
 
   handleEditEducation(e) {
     const index = e.target.value === null ? null : parseInt(e.target.value);
     this.setState(prevState => {
-      const education = [...prevState.sections[1].items];
+      const education = [...prevState.educationItems];
       return {
         education: {
           ...education[index]
@@ -309,77 +344,86 @@ export default class App extends Component {
   //experiences
 
   addExperiences = experiences => {
-    const sections = this.state.sections;
-    sections[2].items.push(experiences);
+    const experienceItems = this.state.experienceItems;
+    experienceItems.push(experiences);
 
-    console.log(sections);
-
-    this.setState({ sections });
+    this.setState({ experienceItems });
   };
 
   updateExperiences = (experiences, index) => {
     this.setState(state => {
-      const experiencesItems = state.sections[2].items.map((item, j) => {
+      const experienceItems = state.experienceItems.map((item, j) => {
         if (j === index) {
           return experiences;
         } else {
           return item;
         }
       });
-      const sections = this.state.sections;
-      sections[2].items = experiencesItems;
+
       return {
-        sections
+        experienceItems
       };
     });
   };
 
   onRemoveExperiences = index => {
     this.setState(state => {
-      const experiences = state.sections[1].items.filter((item, j) => {
+      const experienceItems = state.experienceItems.filter((item, j) => {
         return index !== j;
       });
-      const sections = this.state.sections;
-      sections[2].items = experiences;
+
       return {
-        sections
+        experienceItems
       };
     });
   };
 
   onSubmitExperiences = e => {
     e.preventDefault();
-    const tags =
-      this.state.experiences.descriptionTags !== undefined
-        ? this.state.experiences.descriptionTags
-        : [];
-    console.log(tags);
-    let experiences = {
-      title: this.state.experiences.title,
-      company: this.state.experiences.company,
-      description: this.state.experiences.description,
-      companyWebSite: this.state.experiences.companyWebSite,
-      companyMeta: this.state.experiences.companyMeta,
-      descriptionTags: Array.isArray(tags) ? tags : tags.split(" "),
-      start_date: this.state.experiences.start_date,
-      end_date: this.state.experiences.end_date,
-      datesBetween:
-        this.state.experiences.start_date +
-        " - " +
-        this.state.experiences.end_date
-    };
-    console.log(experiences);
-    if (this.state.dropdown === null) {
-      this.addExperiences(experiences);
+    if (
+      this.state.experiences.title !== "" &&
+      this.state.experiences.company !== "" &&
+      this.state.experiences.description !== "" &&
+      this.state.experiences.companyWebSite !== "" &&
+      this.state.experiences.companyMeta !== "" &&
+      this.state.experiences.description !== "" &&
+      this.state.experiences.start_date !== "" &&
+      this.state.experiences.end_date !== ""
+    ) {
+      const tags =
+        this.state.experiences.descriptionTags !== undefined
+          ? this.state.experiences.descriptionTags
+          : [];
+      console.log(tags);
+      let experiences = {
+        title: this.state.experiences.title,
+        company: this.state.experiences.company,
+        description: this.state.experiences.description,
+        companyWebSite: this.state.experiences.companyWebSite,
+        companyMeta: this.state.experiences.companyMeta,
+        descriptionTags: Array.isArray(tags) ? tags : tags.split(" "),
+        start_date: this.state.experiences.start_date,
+        end_date: this.state.experiences.end_date,
+        datesBetween:
+          this.state.experiences.start_date +
+          " - " +
+          this.state.experiences.end_date
+      };
+      console.log(experiences);
+      if (this.state.dropdown === null) {
+        this.addExperiences(experiences);
+      } else {
+        this.updateExperiences(experiences, this.state.dropdown);
+      }
     } else {
-      this.updateExperiences(experiences, this.state.dropdown);
+      alert("experiences data missing!!");
     }
   };
 
   handleEditExperiences(e) {
     const index = e.target.value === null ? null : parseInt(e.target.value);
     this.setState(prevState => {
-      const experiences = [...prevState.sections[2].items];
+      const experiences = [...prevState.experienceItems];
       return {
         experiences: {
           ...experiences[index]
@@ -389,11 +433,114 @@ export default class App extends Component {
     });
   }
 
+  // Projects
+
+  addProjects = projects => {
+    const projectsGroups = this.state.projectsGroups;
+    projectsGroups.push(projects);
+
+    this.setState({ projectsGroups });
+  };
+
+  updateProjects = (projects, index) => {
+    this.setState(state => {
+      const projectsGroups = state.projectsGroups.map((item, j) => {
+        if (j === index) {
+          return projects;
+        } else {
+          return item;
+        }
+      });
+
+      return {
+        projects
+      };
+    });
+  };
+
+  onRemoveProjects = index => {
+    this.setState(state => {
+      const projectsGroups = state.projectsGroups.filter((item, j) => {
+        return index !== j;
+      });
+
+      return {
+        projectsGroups
+      };
+    });
+  };
+
+  onSubmitProjects = e => {
+    e.preventDefault();
+    console.log(this.state.projectsGroups);
+    if (
+      this.state.projects.sectionHeader !== "" &&
+      this.state.projects.description !== ""
+      // this.state.projects.items !== ""
+    ) {
+      let projects = {
+        title: this.state.projects.sectionHeader,
+        company: this.state.projects.description,
+        description: this.state.projects.items
+      };
+      if (this.state.dropdown === null) {
+        this.addProjects(projects);
+      } else {
+        this.updateProjects(projects, this.state.dropdown);
+      }
+    } else {
+      alert("Projects data missing!!");
+    }
+  };
+
+  handleEditProjects(e) {
+    const index = e.target.value === null ? null : parseInt(e.target.value);
+    this.setState(prevState => {
+      const projects = [...prevState.projectsGroups];
+      return {
+        projects: {
+          ...projects[index]
+        },
+        dropdown: index
+      };
+    });
+  }
+
   render() {
-    console.log("render state", this.state);
+    const sections = [];
+
+    if (this.state.educationItems.length > 0) {
+      sections.push({
+        type: "common-list",
+        title: "Education",
+        icon: "graduation",
+        items: this.state.educationItems
+      });
+    }
+
+    if (this.state.experienceItems.length > 0) {
+      sections.push({
+        type: "experiences-list",
+        title: "Experiences",
+        // description: "Optional",
+        icon: "archive",
+        items: this.state.experienceItems
+      });
+    }
+
+    if (this.state.projectsGroups.length > 0) {
+      sections.push({
+        type: "projects-list",
+        title: "Projects",
+        // description: "Optional",
+        icon: "tasks",
+        groups: this.state.projectsGroups
+      });
+    }
+    const props = { personalData: this.state.personalData, sections: sections };
     return (
       <div>
-        <form onSubmit={this.onSubmit}>
+        <form onSubmit={this.onSubmitPersonaldata}>
           <h3>Personal Data</h3>
           <label>Name: </label>
           <input name="name" type="name" placeholder="name" />
@@ -498,7 +645,7 @@ export default class App extends Component {
           <option key={null} value={null}>
             Select an Option
           </option>
-          {this.state.sections[1].items.map((item, index) => {
+          {this.state.educationItems.map((item, index) => {
             return (
               <>
                 <option
@@ -520,7 +667,7 @@ export default class App extends Component {
           Remove
         </button>
 
-        <form onSubmit={this.onSubmit1}>
+        <form onSubmit={this.onSubmitEducation}>
           <label>Education title: </label>
           <input
             value={this.state.education.title}
@@ -609,14 +756,6 @@ export default class App extends Component {
         <br></br>
 
         <h3>Experiences</h3>
-        <input
-          type="checkbox"
-          disabled={this.state.emailDisabled}
-          onChange={() =>
-            this.setState({ emailDisabled: !this.state.emailDisabled })
-          }
-        />
-
         <select
           name="options"
           onChange={e => this.handleEditExperiences(e)}
@@ -625,7 +764,7 @@ export default class App extends Component {
           <option key={null} value={null}>
             Select an Option
           </option>
-          {this.state.sections[2].items.map((item, index) => {
+          {this.state.experienceItems.map((item, index) => {
             return (
               <>
                 <option
@@ -779,7 +918,93 @@ export default class App extends Component {
           <input type="submit" />
         </form>
 
-        <CV {...this.state} />
+        {/* Projects intputs  */}
+        <br></br>
+
+        <h3>Projects</h3>
+        <select
+          name="options"
+          onChange={e => this.handleEditProjects(e)}
+          value={this.state.dropdown}
+        >
+          <option key={null} value={null}>
+            Select an Option
+          </option>
+          {this.state.projectsGroups.map((item, index) => {
+            return (
+              <>
+                <option
+                  key={item.sectionHeader}
+                  value={index}
+                  selected={this.state.dropdown === index}
+                >
+                  {`${item.sectionHeader}`}
+                </option>
+              </>
+            );
+          })}
+        </select>
+
+        <button
+          type="button"
+          onClick={() => this.onRemoveProjects(this.state.dropdown)}
+        >
+          Remove
+        </button>
+
+        <form onSubmit={this.onSubmitProjects}>
+          <label>sectionHeader: </label>
+          <input
+            value={this.state.projects.sectionHeader}
+            name="sectionHeader"
+            type="text"
+            placeholder="sectionHeader"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.projects;
+                _state.sectionHeader = value;
+                return { projects: _state };
+              });
+            }}
+          />
+
+          <label>description: </label>
+          <input
+            value={this.state.projects.description}
+            name="description"
+            type="text"
+            placeholder="description"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.projects;
+                _state.description = value;
+                return { projects: _state };
+              });
+            }}
+          />
+
+          {/* <label>items: </label>
+          <input
+            value={this.state.projects.items}
+            name="items"
+            type="text"
+            placeholder="items"
+            onChange={e => {
+              const value = e.target.value;
+              this.setState(prevState => {
+                const _state = prevState.projects;
+                _state.items = value;
+                return { projects: _state };
+              });
+            }}
+          /> */}
+
+          <input type="submit" />
+        </form>
+
+        <CV {...props} />
       </div>
     );
   }
