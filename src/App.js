@@ -13,13 +13,17 @@ export default class App extends Component {
       educationItems: [],
       experienceItems: [],
       projectsGroups: [],
-      projectItems: [],
+      // projectsGroupsItems: [],
       conferencesAndCertificatesItems: [],
       languageItems: [],
       skillsProficiencyItems: [],
       hobiesAndInterests: [],
 
-      dropdown: null, // title
+      dropdownEducation: null, // title
+      dropdownExperiences: null, // title
+      dropdownProjects: null, // title
+      dropdownProjectsItems: null, // title
+
       education: {
         index: null,
         title: "",
@@ -45,14 +49,13 @@ export default class App extends Component {
         index: null,
         sectionHeader: "",
         description: ""
-        // items: []
       },
-      // project_items: [],
-      /*   index: "",
+      items: {
+        index: null,
         title: "",
         projectUrl: "",
         description: ""
-      }, */
+      },
       personalData: {
         name: "Full Name",
         title: "Title",
@@ -225,6 +228,32 @@ export default class App extends Component {
       githubDisabled: "ture"
     };
   }
+  componentDidMount() {
+    this.getUserData();
+  }
+
+  getUserData = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/users/5dd51524d546fa183df19658`
+      );
+      console.log("fetch error1");
+      const answer = await response.json();
+      console.log("fetch error", answer);
+      if (answer.success) {
+        //update the user in state
+        const fetchedPersonalData = answer.result;
+        // contacts.push(answer.result);
+        console.log(answer.result.personalData);
+        this.setState({ personalData: fetchedPersonalData.personalData });
+      } else {
+        console.log("error:personal data not found");
+      }
+    } catch (err) {
+      console.log("error", err);
+    }
+  };
+
   onSubmitPersonaldata = e => {
     e.preventDefault();
     const personalData = this.state.personalData;
@@ -257,7 +286,15 @@ export default class App extends Component {
     personalData.contacts = contacts;
 
     console.log("contacts", contacts);
-
+    // debugger;
+    fetch(`http://localhost:8000/users/5dd3f3ef03978f65a9907ba1`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ personalData })
+    });
     this.setState({ personalData });
   };
 
@@ -293,7 +330,8 @@ export default class App extends Component {
       });
 
       return {
-        educationItems
+        educationItems,
+        dropdownEducation: null
       };
     });
   };
@@ -318,7 +356,7 @@ export default class App extends Component {
           " - " +
           this.state.education.end_date
       };
-      if (this.state.dropdown === null) {
+      if (this.state.dropdownEducation === null) {
         this.addEducation(education);
       } else {
         this.updateEducation(education, this.state.dropdown);
@@ -329,14 +367,17 @@ export default class App extends Component {
   };
 
   handleEditEducation(e) {
-    const index = e.target.value === null ? null : parseInt(e.target.value);
+    const index =
+      e.target.value === null || e.target.value === "Select an Option"
+        ? null
+        : parseInt(e.target.value);
     this.setState(prevState => {
       const education = [...prevState.educationItems];
       return {
         education: {
           ...education[index]
         },
-        dropdown: index
+        dropdownEducation: index
       };
     });
   }
@@ -373,7 +414,8 @@ export default class App extends Component {
       });
 
       return {
-        experienceItems
+        experienceItems,
+        dropdownExperiences: null
       };
     });
   };
@@ -410,10 +452,10 @@ export default class App extends Component {
           this.state.experiences.end_date
       };
       console.log(experiences);
-      if (this.state.dropdown === null) {
+      if (this.state.dropdownExperiences === null) {
         this.addExperiences(experiences);
       } else {
-        this.updateExperiences(experiences, this.state.dropdown);
+        this.updateExperiences(experiences, this.state.dropdownExperiences);
       }
     } else {
       alert("experiences data missing!!");
@@ -421,14 +463,17 @@ export default class App extends Component {
   };
 
   handleEditExperiences(e) {
-    const index = e.target.value === null ? null : parseInt(e.target.value);
+    const index =
+      e.target.value === null || e.target.value === "Select an Option"
+        ? null
+        : parseInt(e.target.value);
     this.setState(prevState => {
       const experiences = [...prevState.experienceItems];
       return {
         experiences: {
           ...experiences[index]
         },
-        dropdown: index
+        dropdownExperiences: index
       };
     });
   }
@@ -438,8 +483,10 @@ export default class App extends Component {
   addProjects = projects => {
     const projectsGroups = this.state.projectsGroups;
     projectsGroups.push(projects);
-
-    this.setState({ projectsGroups });
+    this.setState({
+      projectsGroups,
+      dropdownProjects: projectsGroups.length - 1
+    });
   };
 
   updateProjects = (projects, index) => {
@@ -451,9 +498,10 @@ export default class App extends Component {
           return item;
         }
       });
+      // debugger;
 
       return {
-        projects
+        projectsGroups
       };
     });
   };
@@ -465,28 +513,32 @@ export default class App extends Component {
       });
 
       return {
-        projectsGroups
+        projectsGroups,
+        dropdownProjects: null
       };
     });
   };
 
   onSubmitProjects = e => {
     e.preventDefault();
-    console.log(this.state.projectsGroups);
+    console.log("this.state.projectsGroups", this.state.projectsGroups);
+    // debugger;
     if (
       this.state.projects.sectionHeader !== "" &&
       this.state.projects.description !== ""
-      // this.state.projects.items !== ""
     ) {
       let projects = {
-        title: this.state.projects.sectionHeader,
-        company: this.state.projects.description,
-        description: this.state.projects.items
+        sectionHeader: this.state.projects.sectionHeader,
+        description: this.state.projects.description,
+        items:
+          this.state.dropdownProjects !== null
+            ? this.state.projectsGroups[this.state.dropdownProjects].items
+            : []
       };
-      if (this.state.dropdown === null) {
+      if (this.state.dropdownProjects === null) {
         this.addProjects(projects);
       } else {
-        this.updateProjects(projects, this.state.dropdown);
+        this.updateProjects(projects, this.state.dropdownProjects);
       }
     } else {
       alert("Projects data missing!!");
@@ -494,14 +546,103 @@ export default class App extends Component {
   };
 
   handleEditProjects(e) {
-    const index = e.target.value === null ? null : parseInt(e.target.value);
+    const index =
+      e.target.value === null || e.target.value === "Select an Option"
+        ? null
+        : parseInt(e.target.value);
     this.setState(prevState => {
       const projects = [...prevState.projectsGroups];
       return {
         projects: {
           ...projects[index]
         },
-        dropdown: index
+        dropdownProjects: index
+      };
+    });
+  }
+
+  //project items
+  addProjectItem = items => {
+    const projectsGroups = this.state.projectsGroups;
+    projectsGroups[this.state.dropdownProjects].items.push(items);
+
+    this.setState({ projectsGroups });
+  };
+
+  updateProjectItem = (items, index) => {
+    this.setState(state => {
+      const projectsGroups = state.projectsGroups;
+
+      projectsGroups[state.dropdownProjects].items = projectsGroups[
+        state.dropdownProjects
+      ].items.map((item, j) => {
+        if (j === index) {
+          return items;
+        } else {
+          return item;
+        }
+      });
+
+      return {
+        projectsGroups
+      };
+    });
+  };
+
+  onRemoveProjectItem = index => {
+    this.setState(state => {
+      const projectsGroups = state.projectsGroups;
+
+      projectsGroups[state.dropdownProjects].items = projectsGroups[
+        state.dropdownProjects
+      ].items.filter((item, j) => {
+        return index !== j;
+      });
+
+      return {
+        projectsGroups,
+        dropdowawsomenProjectsItems: null
+      };
+    });
+  };
+
+  onSubmitProjectItem = e => {
+    e.preventDefault();
+    debugger;
+    if (
+      this.state.items.title !== "" &&
+      this.state.items.projectUrl !== "" &&
+      this.state.items.description !== ""
+    ) {
+      let items = {
+        title: this.state.items.title,
+        projectUrl: this.state.items.projectUrl,
+        description: this.state.items.description
+      };
+      if (this.state.dropdownProjectsItems === null) {
+        this.addProjectItem(items);
+      } else {
+        this.updateProjectItem(items, this.state.dropdownProjectsItems);
+      }
+    } else {
+      alert("project items data missing!!");
+    }
+  };
+
+  handleEditProjectsItem(e) {
+    const index =
+      e.target.value === null || e.target.value === "Select an Option"
+        ? null
+        : parseInt(e.target.value);
+    this.setState(prevState => {
+      const items = [
+        ...prevState.projectsGroups[prevState.dropdownProjects].items
+      ];
+      return {
+        items: {
+          ...items[index]
+        },
+        dropdownProjectsItems: index
       };
     });
   }
@@ -537,13 +678,33 @@ export default class App extends Component {
         groups: this.state.projectsGroups
       });
     }
+    // if (this.state.projectsGroupsItems.length > 0) {
+    //   items.push({
+    //     title: "Project",
+    //     projectUrl: "optional",
+    //     description: "Optional"
+    //   });
+    // }
     const props = { personalData: this.state.personalData, sections: sections };
     return (
       <div>
         <form onSubmit={this.onSubmitPersonaldata}>
           <h3>Personal Data</h3>
           <label>Name: </label>
-          <input name="name" type="name" placeholder="name" />
+          <input
+            name="name"
+            value={this.state.personalData.name}
+            type="name"
+            placeholder="name"
+            onChange={event => {
+              this.setState({
+                personalData: {
+                  ...this.state.personalData,
+                  [event.target.name]: event.target.value
+                }
+              });
+            }}
+          />
           <label>title: </label>
           <input name="title" type="title" placeholder="title" />
           <label>image: </label>
@@ -640,7 +801,7 @@ export default class App extends Component {
         <select
           name="options"
           onChange={e => this.handleEditEducation(e)}
-          value={this.state.dropdown}
+          value={this.state.dropdownEducation}
         >
           <option key={null} value={null}>
             Select an Option
@@ -651,7 +812,7 @@ export default class App extends Component {
                 <option
                   key={item.title}
                   value={index}
-                  selected={this.state.dropdown === index}
+                  selected={this.state.dropdownEducation === index}
                 >
                   {`${item.title}`}
                 </option>
@@ -662,7 +823,7 @@ export default class App extends Component {
 
         <button
           type="button"
-          onClick={() => this.onRemoveEducation(this.state.dropdown)}
+          onClick={() => this.onRemoveEducation(this.state.dropdownEducation)}
         >
           Remove
         </button>
@@ -759,7 +920,7 @@ export default class App extends Component {
         <select
           name="options"
           onChange={e => this.handleEditExperiences(e)}
-          value={this.state.dropdown}
+          value={this.state.dropdownExperiences}
         >
           <option key={null} value={null}>
             Select an Option
@@ -770,7 +931,7 @@ export default class App extends Component {
                 <option
                   key={item.title}
                   value={index}
-                  selected={this.state.dropdown === index}
+                  selected={this.state.dropdownExperiences === index}
                 >
                   {`${item.title}`}
                 </option>
@@ -781,7 +942,9 @@ export default class App extends Component {
 
         <button
           type="button"
-          onClick={() => this.onRemoveExperiences(this.state.dropdown)}
+          onClick={() =>
+            this.onRemoveExperiences(this.state.dropdownExperiences)
+          }
         >
           Remove
         </button>
@@ -925,7 +1088,7 @@ export default class App extends Component {
         <select
           name="options"
           onChange={e => this.handleEditProjects(e)}
-          value={this.state.dropdown}
+          value={this.state.dropdownProjects}
         >
           <option key={null} value={null}>
             Select an Option
@@ -936,7 +1099,7 @@ export default class App extends Component {
                 <option
                   key={item.sectionHeader}
                   value={index}
-                  selected={this.state.dropdown === index}
+                  selected={this.state.dropdownProjects === index}
                 >
                   {`${item.sectionHeader}`}
                 </option>
@@ -947,7 +1110,7 @@ export default class App extends Component {
 
         <button
           type="button"
-          onClick={() => this.onRemoveProjects(this.state.dropdown)}
+          onClick={() => this.onRemoveProjects(this.state.dropdownProjects)}
         >
           Remove
         </button>
@@ -984,27 +1147,106 @@ export default class App extends Component {
               });
             }}
           />
-
-          {/* <label>items: </label>
-          <input
-            value={this.state.projects.items}
-            name="items"
-            type="text"
-            placeholder="items"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.projects;
-                _state.items = value;
-                return { projects: _state };
-              });
-            }}
-          /> */}
-
           <input type="submit" />
         </form>
 
-        <CV {...props} />
+        <br></br>
+
+        {this.state.dropdownProjects !== null ? (
+          <>
+            <h3>Project items </h3>
+            <select
+              name="options"
+              onChange={e => this.handleEditProjectsItem(e)}
+              value={this.state.dropdownProjectsItems}
+            >
+              <option key={null} value={null}>
+                Select an Option
+              </option>
+              {this.state.projectsGroups[this.state.dropdownProjects].items.map(
+                (item, index) => {
+                  return (
+                    <>
+                      <option
+                        key={item.title}
+                        value={index}
+                        selected={this.state.dropdownProjectsItems === index}
+                      >
+                        {`${item.title}`}
+                      </option>
+                    </>
+                  );
+                }
+              )}
+            </select>
+
+            <button
+              type="button"
+              onClick={() =>
+                this.onRemoveProjectItem(this.state.dropdownProjectsItems)
+              }
+            >
+              Remove
+            </button>
+            <form onSubmit={this.onSubmitProjectItem}>
+              <label>title: </label>
+              <input
+                value={this.state.items.title}
+                name="title"
+                type="text"
+                placeholder="title"
+                onChange={e => {
+                  const value = e.target.value;
+                  this.setState(prevState => {
+                    const _state = prevState.items;
+                    _state.title = value;
+                    return { items: _state };
+                  });
+                }}
+              />
+
+              <label>project url: </label>
+              <input
+                value={this.state.items.projectUrl}
+                name="project url"
+                type="text"
+                placeholder="project url"
+                onChange={e => {
+                  const value = e.target.value;
+                  this.setState(prevState => {
+                    const _state = prevState.items;
+                    _state.projectUrl = value;
+                    return { items: _state };
+                  });
+                }}
+              />
+
+              <label>description: </label>
+              <input
+                value={this.state.items.description}
+                name="description"
+                type="text"
+                placeholder="description"
+                onChange={e => {
+                  const value = e.target.value;
+                  this.setState(prevState => {
+                    const _state = prevState.items;
+                    _state.description = value;
+                    return { items: _state };
+                  });
+                }}
+              />
+              <input type="submit" />
+            </form>
+          </>
+        ) : null}
+
+        {/* {this.state.dropdown !== null ? (
+          <div>Form go here</div>
+        ) : (
+          "Select company to add projects"
+        )} */}
+        <CV {...this.state} />
       </div>
     );
   }
