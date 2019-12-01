@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./App.css";
 
 import CV from "react-cv";
 //import { CVData } from './data';
@@ -235,7 +236,7 @@ export default class App extends Component {
   getUserData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/users/5dd51524d546fa183df19658`
+        `http://localhost:8000/users/5dd58c687fd62710fb8e6c5c`
       );
       console.log("fetch error1");
       const answer = await response.json();
@@ -287,7 +288,7 @@ export default class App extends Component {
 
     console.log("contacts", contacts);
     // debugger;
-    fetch(`http://localhost:8000/users/5dd3f3ef03978f65a9907ba1`, {
+    fetch(`http://localhost:8000/users/5dd58c687fd62710fb8e6c5c`, {
       method: "PATCH",
       headers: {
         Accept: "application/json",
@@ -688,483 +689,558 @@ export default class App extends Component {
     const props = { personalData: this.state.personalData, sections: sections };
     return (
       <div>
-        <form onSubmit={this.onSubmitPersonaldata}>
-          <h3>Personal Data</h3>
-          <label>Name: </label>
-          <input
-            name="name"
-            value={this.state.personalData.name}
-            type="name"
-            placeholder="name"
-            onChange={event => {
-              this.setState({
-                personalData: {
-                  ...this.state.personalData,
-                  [event.target.name]: event.target.value
-                }
-              });
-            }}
-          />
-          <label>title: </label>
-          <input name="title" type="title" placeholder="title" />
-          <label>image: </label>
-          <input name="image" type="" placeholder="image link" />
+        <div style={{ float: "left", width: "30%" }}>
+          <div className="PersonalData">
+            <form onSubmit={this.onSubmitPersonaldata}>
+              <h3>Personal Data</h3>
+              <div className="row">
+                <label className="col-15">Name </label>
+                <input
+                  className="col-75"
+                  name="name"
+                  value={this.state.personalData.name}
+                  type="name"
+                  placeholder="name"
+                  onChange={event => {
+                    this.setState({
+                      personalData: {
+                        ...this.state.personalData,
+                        [event.target.name]: event.target.value
+                      }
+                    });
+                  }}
+                />
+              </div>
+              <div className="row">
+                <label className="col-15">Title </label>
+                <input
+                  className="col-75"
+                  name="title"
+                  // value={this.state.personalData.title}
+                  type="title"
+                  placeholder="title"
+                  // onChange={event => {
+                  //   this.setState({
+                  //     personalData: {
+                  //       ...this.state.personalData,
+                  //       [event.target.title]: event.target.value
+                  //     }
+                  //   });
+                  // }}
+                />
+              </div>
+              <div className="row">
+                <label className="col-15">Image </label>
+                <input
+                  className="col-75"
+                  name="image"
+                  type=""
+                  placeholder="image"
+                />
+              </div>
 
-          <label>email: </label>
-          <input
-            type="checkbox"
-            onChange={() =>
-              this.setState({ emailDisabled: !this.state.emailDisabled })
-            }
-          />
-          <input
-            name="email"
-            type="email"
-            placeholder="email"
-            disabled={this.state.emailDisabled}
-          />
+              <div className="row">
+                <label className="col-15">Email</label>
+                <div className="row col-75contact">
+                  <input
+                    type="checkbox"
+                    onChange={() =>
+                      this.setState({
+                        emailDisabled: !this.state.emailDisabled
+                      })
+                    }
+                  />
+                  <input
+                    className="col-75input"
+                    name="email"
+                    type="email"
+                    placeholder="email"
+                    disabled={this.state.emailDisabled}
+                  />
+                </div>
+              </div>
 
-          <label>phone: </label>
-          <input
-            type="checkbox"
-            onChange={() =>
-              this.setState({ phoneDisabled: !this.state.phoneDisabled })
-            }
-          />
-          <input
-            name="phone"
-            type="phone"
-            placeholder="phone"
-            disabled={this.state.phoneDisabled}
-          />
-          <label>website: </label>
-          <input
-            type="checkbox"
-            onChange={() =>
-              this.setState({ websiteDisabled: !this.state.websiteDisabled })
-            }
-          />
-          <input
-            name="website"
-            type="website"
-            placeholder="website"
-            disabled={this.state.websiteDisabled}
-          />
-          <label>linkedin: </label>
-          <input
-            type="checkbox"
-            onChange={() =>
-              this.setState({ linkedinDisabled: !this.state.linkedinDisabled })
-            }
-          />
+              <div className="row">
+                <label className="col-15">Phone </label>
+                <div className="row col-75contact">
+                  <input
+                    type="checkbox"
+                    onChange={() =>
+                      this.setState({
+                        phoneDisabled: !this.state.phoneDisabled
+                      })
+                    }
+                  />
+                  <input
+                    className="col-75input"
+                    name="phone"
+                    type="phone"
+                    placeholder="phone"
+                    disabled={this.state.phoneDisabled}
+                  />
+                </div>
+              </div>
 
-          <input
-            name="linkedin"
-            type="linkedin"
-            placeholder="linkedin"
-            disabled={this.state.linkedinDisabled}
-          />
-          <label>twitter: </label>
-          <input
-            type="checkbox"
-            onUpdateItem
-            onChange={() =>
-              this.setState({ twitterDisabled: !this.state.twitterDisabled })
-            }
-          />
-          <input
-            name="twitter"
-            type="twitter"
-            placeholder="twitter"
-            disabled={this.state.twitterDisabled}
-          />
-          <label>github: </label>
-          <input
-            type="checkbox"
-            onChange={() =>
-              this.setState({ githubDisabled: !this.state.githubDisabled })
-            }
-          />
-          <input
-            name="github"
-            type="github"
-            placeholder="github"
-            disabled={this.state.githubDisabled}
-          />
+              <div className="row">
+                <label className="col-15">Website </label>
+                <div className="row col-75contact">
+                  <input
+                    type="checkbox"
+                    onChange={() =>
+                      this.setState({
+                        websiteDisabled: !this.state.websiteDisabled
+                      })
+                    }
+                  />
+                  <input
+                    className="col-75input"
+                    name="website"
+                    type="website"
+                    placeholder="website"
+                    disabled={this.state.websiteDisabled}
+                  />
+                </div>
+              </div>
 
-          <input type="submit" />
-        </form>
+              <div className="row">
+                <label className="col-15">Linkedin </label>
+                <div className="row col-75contact">
+                  <input
+                    type="checkbox"
+                    onChange={() =>
+                      this.setState({
+                        linkedinDisabled: !this.state.linkedinDisabled
+                      })
+                    }
+                  />
+                  <input
+                    className="col-75input"
+                    name="linkedin"
+                    type="linkedin"
+                    placeholder="linkedin"
+                    disabled={this.state.linkedinDisabled}
+                  />
+                </div>
+              </div>
 
-        <br></br>
+              <div className="row">
+                <label className="col-15">Twitter </label>
+                <div className="row col-75contact">
+                  <input
+                    type="checkbox"
+                    onUpdateItem
+                    onChange={() =>
+                      this.setState({
+                        twitterDisabled: !this.state.twitterDisabled
+                      })
+                    }
+                  />
+                  <input
+                    className="col-75input"
+                    name="twitter"
+                    type="twitter"
+                    placeholder="twitter"
+                    disabled={this.state.twitterDisabled}
+                  />
+                </div>
+              </div>
 
-        <h3>Education</h3>
-        <select
-          name="options"
-          onChange={e => this.handleEditEducation(e)}
-          value={this.state.dropdownEducation}
-        >
-          <option key={null} value={null}>
-            Select an Option
-          </option>
-          {this.state.educationItems.map((item, index) => {
-            return (
-              <>
-                <option
-                  key={item.title}
-                  value={index}
-                  selected={this.state.dropdownEducation === index}
-                >
-                  {`${item.title}`}
-                </option>
-              </>
-            );
-          })}
-        </select>
+              <div className="row">
+                <label className="col-15">Github </label>
+                <div className="row col-75contact">
+                  <input
+                    type="checkbox"
+                    onChange={() =>
+                      this.setState({
+                        githubDisabled: !this.state.githubDisabled
+                      })
+                    }
+                  />
+                  <input
+                    className="col-75input"
+                    name="github"
+                    type="github"
+                    placeholder="github"
+                    disabled={this.state.githubDisabled}
+                  />
+                </div>
+              </div>
 
-        <button
-          type="button"
-          onClick={() => this.onRemoveEducation(this.state.dropdownEducation)}
-        >
-          Remove
-        </button>
+              <input className="col-50  submitpersonal" type="submit" />
+            </form>
+          </div>
 
-        <form onSubmit={this.onSubmitEducation}>
-          <label>Education title: </label>
-          <input
-            value={this.state.education.title}
-            name="title"
-            type="text"
-            placeholder="title"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.education;
-                _state.title = value;
-                return { education: _state };
-              });
-            }}
-          />
+          <br></br>
 
-          <label>Education authority: </label>
-          <input
-            value={this.state.education.authority}
-            name="authority"
-            type="text"
-            placeholder="authority"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.education;
-                _state.authority = value;
-                return { education: _state };
-              });
-            }}
-          />
+          <h3>Education</h3>
+          <select
+            name="options"
+            onChange={e => this.handleEditEducation(e)}
+            value={this.state.dropdownEducation}
+          >
+            <option key={null} value={null}>
+              Select an Option
+            </option>
+            {this.state.educationItems.map((item, index) => {
+              return (
+                <>
+                  <option
+                    key={item.title}
+                    value={index}
+                    selected={this.state.dropdownEducation === index}
+                  >
+                    {`${item.title}`}
+                  </option>
+                </>
+              );
+            })}
+          </select>
 
-          <label>Education authorityWebSite: </label>
-          <input
-            value={this.state.education.authorityWebSite}
-            name="authorityWebSite"
-            type="text"
-            placeholder="authorityWebSite"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.education;
-                _state.authorityWebSite = value;
-                return { education: _state };
-              });
-            }}
-          />
+          <button
+            type="button"
+            onClick={() => this.onRemoveEducation(this.state.dropdownEducation)}
+          >
+            Remove
+          </button>
 
-          <fieldset>
-            <legend>year</legend>
-            <label for="from">from</label>
+          <form onSubmit={this.onSubmitEducation}>
+            <label className="col-25">Education title: </label>
             <input
-              type="number"
-              min="1900"
-              id="from"
-              name="from"
-              value={this.state.education.start_date}
-              onChange={e => {
-                const value = e.target.value;
-                const _state = this.state.education;
-                _state.start_date = value;
-                this.setState({ education: _state });
-              }}
-            />
-
-            <label for="to">to</label>
-            <input
-              type="number"
-              max="2099"
-              id="to"
-              name="to"
-              value={this.state.education.end_date}
+              value={this.state.education.title}
+              name="title"
+              type="text"
+              placeholder="title"
               onChange={e => {
                 const value = e.target.value;
                 this.setState(prevState => {
                   const _state = prevState.education;
-                  _state.end_date = value;
+                  _state.title = value;
                   return { education: _state };
                 });
               }}
             />
-          </fieldset>
-          <input type="submit" />
-        </form>
 
-        <br></br>
-
-        <h3>Experiences</h3>
-        <select
-          name="options"
-          onChange={e => this.handleEditExperiences(e)}
-          value={this.state.dropdownExperiences}
-        >
-          <option key={null} value={null}>
-            Select an Option
-          </option>
-          {this.state.experienceItems.map((item, index) => {
-            return (
-              <>
-                <option
-                  key={item.title}
-                  value={index}
-                  selected={this.state.dropdownExperiences === index}
-                >
-                  {`${item.title}`}
-                </option>
-              </>
-            );
-          })}
-        </select>
-
-        <button
-          type="button"
-          onClick={() =>
-            this.onRemoveExperiences(this.state.dropdownExperiences)
-          }
-        >
-          Remove
-        </button>
-
-        <form onSubmit={this.onSubmitExperiences}>
-          <label>experience title: </label>
-          <input
-            value={this.state.experiences.title}
-            name="title"
-            type="text"
-            placeholder="title"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.experiences;
-                _state.title = value;
-                return { experiences: _state };
-              });
-            }}
-          />
-
-          <label>company name: </label>
-          <input
-            value={this.state.experiences.company}
-            name="company"
-            type="text"
-            placeholder="company"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.experiences;
-                _state.company = value;
-                return { experiences: _state };
-              });
-            }}
-          />
-
-          <label>company description: </label>
-          <input
-            value={this.state.experiences.description}
-            name="description"
-            type="text"
-            placeholder="description"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.experiences;
-                _state.description = value;
-                return { experiences: _state };
-              });
-            }}
-          />
-
-          <label>company Website: </label>
-          <input
-            value={this.state.experiences.companyWebSite}
-            name="companyWebsite"
-            type="text"
-            placeholder="companyWebsite"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.experiences;
-                _state.companyWebSite = value;
-                return { experiences: _state };
-              });
-            }}
-          />
-
-          <label>company info: </label>
-          <input
-            value={this.state.experiences.companyMeta}
-            name="companyMeta"
-            type="text"
-            placeholder="companyMeta"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.experiences;
-                _state.companyMeta = value;
-                return { experiences: _state };
-              });
-            }}
-          />
-
-          <label>descriptionTags: </label>
-          <input
-            value={this.state.experiences.descriptionTags}
-            name="descriptionTags"
-            type="text"
-            placeholder="descriptionTags"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.experiences;
-                _state.descriptionTags = value;
-                return { experiences: _state };
-              });
-            }}
-          />
-
-          <fieldset>
-            <legend>Year and Month</legend>
-            <label for="from">from</label>
+            <label className="col-25">Education authority: </label>
             <input
-              type="number"
-              id="from"
-              name="from"
-              value={this.state.experiences.start_date}
+              value={this.state.education.authority}
+              name="authority"
+              type="text"
+              placeholder="authority"
               onChange={e => {
                 const value = e.target.value;
-                const _state = this.state.experiences;
-                _state.start_date = value;
-                this.setState({ experiences: _state });
+                this.setState(prevState => {
+                  const _state = prevState.education;
+                  _state.authority = value;
+                  return { education: _state };
+                });
               }}
             />
 
-            <label for="to">to</label>
+            <label className="col-25">Education authorityWebSite: </label>
             <input
-              type="number"
-              id="to"
-              name="to"
-              value={this.state.experiences.end_date}
+              value={this.state.education.authorityWebSite}
+              name="authorityWebSite"
+              type="text"
+              placeholder="authorityWebSite"
+              onChange={e => {
+                const value = e.target.value;
+                this.setState(prevState => {
+                  const _state = prevState.education;
+                  _state.authorityWebSite = value;
+                  return { education: _state };
+                });
+              }}
+            />
+
+            <fieldset>
+              <legend>year</legend>
+              <label for="from">from</label>
+              <input
+                type="number"
+                min="1900"
+                id="from"
+                name="from"
+                value={this.state.education.start_date}
+                onChange={e => {
+                  const value = e.target.value;
+                  const _state = this.state.education;
+                  _state.start_date = value;
+                  this.setState({ education: _state });
+                }}
+              />
+
+              <label for="to">to</label>
+              <input
+                type="number"
+                max="2099"
+                id="to"
+                name="to"
+                value={this.state.education.end_date}
+                onChange={e => {
+                  const value = e.target.value;
+                  this.setState(prevState => {
+                    const _state = prevState.education;
+                    _state.end_date = value;
+                    return { education: _state };
+                  });
+                }}
+              />
+            </fieldset>
+            <input className="col-75" type="submit" />
+          </form>
+
+          <br></br>
+
+          <h3>Experiences</h3>
+          <select
+            name="options"
+            onChange={e => this.handleEditExperiences(e)}
+            value={this.state.dropdownExperiences}
+          >
+            <option key={null} value={null}>
+              Select an Option
+            </option>
+            {this.state.experienceItems.map((item, index) => {
+              return (
+                <>
+                  <option
+                    key={item.title}
+                    value={index}
+                    selected={this.state.dropdownExperiences === index}
+                  >
+                    {`${item.title}`}
+                  </option>
+                </>
+              );
+            })}
+          </select>
+
+          <button
+            type="button"
+            onClick={() =>
+              this.onRemoveExperiences(this.state.dropdownExperiences)
+            }
+          >
+            Remove
+          </button>
+
+          <form onSubmit={this.onSubmitExperiences}>
+            <label className="col-25">experience title: </label>
+            <input
+              value={this.state.experiences.title}
+              name="title"
+              type="text"
+              placeholder="title"
               onChange={e => {
                 const value = e.target.value;
                 this.setState(prevState => {
                   const _state = prevState.experiences;
-                  _state.end_date = value;
+                  _state.title = value;
                   return { experiences: _state };
                 });
               }}
             />
-          </fieldset>
-          <input type="submit" />
-        </form>
 
-        {/* Projects intputs  */}
-        <br></br>
+            <label className="col-25">company name: </label>
+            <input
+              value={this.state.experiences.company}
+              name="company"
+              type="text"
+              placeholder="company"
+              onChange={e => {
+                const value = e.target.value;
+                this.setState(prevState => {
+                  const _state = prevState.experiences;
+                  _state.company = value;
+                  return { experiences: _state };
+                });
+              }}
+            />
 
-        <h3>Projects</h3>
-        <select
-          name="options"
-          onChange={e => this.handleEditProjects(e)}
-          value={this.state.dropdownProjects}
-        >
-          <option key={null} value={null}>
-            Select an Option
-          </option>
-          {this.state.projectsGroups.map((item, index) => {
-            return (
-              <>
-                <option
-                  key={item.sectionHeader}
-                  value={index}
-                  selected={this.state.dropdownProjects === index}
-                >
-                  {`${item.sectionHeader}`}
+            <label className="col-25">company description: </label>
+            <input
+              value={this.state.experiences.description}
+              name="description"
+              type="text"
+              placeholder="description"
+              onChange={e => {
+                const value = e.target.value;
+                this.setState(prevState => {
+                  const _state = prevState.experiences;
+                  _state.description = value;
+                  return { experiences: _state };
+                });
+              }}
+            />
+
+            <label className="col-25">company Website: </label>
+            <input
+              value={this.state.experiences.companyWebSite}
+              name="companyWebsite"
+              type="text"
+              placeholder="companyWebsite"
+              onChange={e => {
+                const value = e.target.value;
+                this.setState(prevState => {
+                  const _state = prevState.experiences;
+                  _state.companyWebSite = value;
+                  return { experiences: _state };
+                });
+              }}
+            />
+
+            <label className="col-25">company info: </label>
+            <input
+              value={this.state.experiences.companyMeta}
+              name="companyMeta"
+              type="text"
+              placeholder="companyMeta"
+              onChange={e => {
+                const value = e.target.value;
+                this.setState(prevState => {
+                  const _state = prevState.experiences;
+                  _state.companyMeta = value;
+                  return { experiences: _state };
+                });
+              }}
+            />
+
+            <label className="col-25">descriptionTags: </label>
+            <input
+              value={this.state.experiences.descriptionTags}
+              name="descriptionTags"
+              type="text"
+              placeholder="descriptionTags"
+              onChange={e => {
+                const value = e.target.value;
+                this.setState(prevState => {
+                  const _state = prevState.experiences;
+                  _state.descriptionTags = value;
+                  return { experiences: _state };
+                });
+              }}
+            />
+
+            <fieldset>
+              <legend>Year and Month</legend>
+              <label for="from">from</label>
+              <input
+                type="number"
+                id="from"
+                name="from"
+                value={this.state.experiences.start_date}
+                onChange={e => {
+                  const value = e.target.value;
+                  const _state = this.state.experiences;
+                  _state.start_date = value;
+                  this.setState({ experiences: _state });
+                }}
+              />
+
+              <label for="to">to</label>
+              <input
+                type="number"
+                id="to"
+                name="to"
+                value={this.state.experiences.end_date}
+                onChange={e => {
+                  const value = e.target.value;
+                  this.setState(prevState => {
+                    const _state = prevState.experiences;
+                    _state.end_date = value;
+                    return { experiences: _state };
+                  });
+                }}
+              />
+            </fieldset>
+            <input className="col-75" type="submit" />
+          </form>
+
+          {/* Projects intputs  */}
+          <br></br>
+
+          <h3>Projects</h3>
+          <select
+            name="options"
+            onChange={e => this.handleEditProjects(e)}
+            value={this.state.dropdownProjects}
+          >
+            <option key={null} value={null}>
+              Select an Option
+            </option>
+            {this.state.projectsGroups.map((item, index) => {
+              return (
+                <>
+                  <option
+                    key={item.sectionHeader}
+                    value={index}
+                    selected={this.state.dropdownProjects === index}
+                  >
+                    {`${item.sectionHeader}`}
+                  </option>
+                </>
+              );
+            })}
+          </select>
+
+          <button
+            type="button"
+            onClick={() => this.onRemoveProjects(this.state.dropdownProjects)}
+          >
+            Remove
+          </button>
+
+          <form onSubmit={this.onSubmitProjects}>
+            <label className="col-25">sectionHeader: </label>
+            <input
+              value={this.state.projects.sectionHeader}
+              name="sectionHeader"
+              type="text"
+              placeholder="sectionHeader"
+              onChange={e => {
+                const value = e.target.value;
+                this.setState(prevState => {
+                  const _state = prevState.projects;
+                  _state.sectionHeader = value;
+                  return { projects: _state };
+                });
+              }}
+            />
+
+            <label className="col-25">description: </label>
+            <input
+              value={this.state.projects.description}
+              name="description"
+              type="text"
+              placeholder="description"
+              onChange={e => {
+                const value = e.target.value;
+                this.setState(prevState => {
+                  const _state = prevState.projects;
+                  _state.description = value;
+                  return { projects: _state };
+                });
+              }}
+            />
+            <input className="col-75" type="submit" />
+          </form>
+
+          <br></br>
+
+          {this.state.dropdownProjects !== null ? (
+            <>
+              <h3>Project items </h3>
+              <select
+                name="options"
+                onChange={e => this.handleEditProjectsItem(e)}
+                value={this.state.dropdownProjectsItems}
+              >
+                <option key={null} value={null}>
+                  Select an Option
                 </option>
-              </>
-            );
-          })}
-        </select>
-
-        <button
-          type="button"
-          onClick={() => this.onRemoveProjects(this.state.dropdownProjects)}
-        >
-          Remove
-        </button>
-
-        <form onSubmit={this.onSubmitProjects}>
-          <label>sectionHeader: </label>
-          <input
-            value={this.state.projects.sectionHeader}
-            name="sectionHeader"
-            type="text"
-            placeholder="sectionHeader"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.projects;
-                _state.sectionHeader = value;
-                return { projects: _state };
-              });
-            }}
-          />
-
-          <label>description: </label>
-          <input
-            value={this.state.projects.description}
-            name="description"
-            type="text"
-            placeholder="description"
-            onChange={e => {
-              const value = e.target.value;
-              this.setState(prevState => {
-                const _state = prevState.projects;
-                _state.description = value;
-                return { projects: _state };
-              });
-            }}
-          />
-          <input type="submit" />
-        </form>
-
-        <br></br>
-
-        {this.state.dropdownProjects !== null ? (
-          <>
-            <h3>Project items </h3>
-            <select
-              name="options"
-              onChange={e => this.handleEditProjectsItem(e)}
-              value={this.state.dropdownProjectsItems}
-            >
-              <option key={null} value={null}>
-                Select an Option
-              </option>
-              {this.state.projectsGroups[this.state.dropdownProjects].items.map(
-                (item, index) => {
+                {this.state.projectsGroups[
+                  this.state.dropdownProjects
+                ].items.map((item, index) => {
                   return (
                     <>
                       <option
@@ -1176,77 +1252,79 @@ export default class App extends Component {
                       </option>
                     </>
                   );
+                })}
+              </select>
+
+              <button
+                type="button"
+                onClick={() =>
+                  this.onRemoveProjectItem(this.state.dropdownProjectsItems)
                 }
-              )}
-            </select>
+              >
+                Remove
+              </button>
+              <form onSubmit={this.onSubmitProjectItem}>
+                <label className="col-25">title: </label>
+                <input
+                  value={this.state.items.title}
+                  name="title"
+                  type="text"
+                  placeholder="title"
+                  onChange={e => {
+                    const value = e.target.value;
+                    this.setState(prevState => {
+                      const _state = prevState.items;
+                      _state.title = value;
+                      return { items: _state };
+                    });
+                  }}
+                />
 
-            <button
-              type="button"
-              onClick={() =>
-                this.onRemoveProjectItem(this.state.dropdownProjectsItems)
-              }
-            >
-              Remove
-            </button>
-            <form onSubmit={this.onSubmitProjectItem}>
-              <label>title: </label>
-              <input
-                value={this.state.items.title}
-                name="title"
-                type="text"
-                placeholder="title"
-                onChange={e => {
-                  const value = e.target.value;
-                  this.setState(prevState => {
-                    const _state = prevState.items;
-                    _state.title = value;
-                    return { items: _state };
-                  });
-                }}
-              />
+                <label className="col-25">project url: </label>
+                <input
+                  value={this.state.items.projectUrl}
+                  name="project url"
+                  type="text"
+                  placeholder="project url"
+                  onChange={e => {
+                    const value = e.target.value;
+                    this.setState(prevState => {
+                      const _state = prevState.items;
+                      _state.projectUrl = value;
+                      return { items: _state };
+                    });
+                  }}
+                />
 
-              <label>project url: </label>
-              <input
-                value={this.state.items.projectUrl}
-                name="project url"
-                type="text"
-                placeholder="project url"
-                onChange={e => {
-                  const value = e.target.value;
-                  this.setState(prevState => {
-                    const _state = prevState.items;
-                    _state.projectUrl = value;
-                    return { items: _state };
-                  });
-                }}
-              />
+                <label className="col-25">description: </label>
+                <input
+                  value={this.state.items.description}
+                  name="description"
+                  type="text"
+                  placeholder="description"
+                  onChange={e => {
+                    const value = e.target.value;
+                    this.setState(prevState => {
+                      const _state = prevState.items;
+                      _state.description = value;
+                      return { items: _state };
+                    });
+                  }}
+                />
+                <input className="col-75" type="submit" />
+              </form>
+            </>
+          ) : null}
 
-              <label>description: </label>
-              <input
-                value={this.state.items.description}
-                name="description"
-                type="text"
-                placeholder="description"
-                onChange={e => {
-                  const value = e.target.value;
-                  this.setState(prevState => {
-                    const _state = prevState.items;
-                    _state.description = value;
-                    return { items: _state };
-                  });
-                }}
-              />
-              <input type="submit" />
-            </form>
-          </>
-        ) : null}
-
-        {/* {this.state.dropdown !== null ? (
+          {/* {this.state.dropdown !== null ? (
           <div>Form go here</div>
         ) : (
           "Select company to add projects"
         )} */}
-        <CV {...this.state} />
+        </div>
+        <div style={{ float: "right", width: "70%" }}>
+          <CV {...this.state} />
+        </div>
       </div>
     );
   }
